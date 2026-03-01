@@ -15,10 +15,21 @@ class DisplayPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
       decoration: BoxDecoration(
-        color: const Color(0xFF0D0D0D),
-        borderRadius: BorderRadius.circular(20),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            const Color(0xFF1A1A1A),
+            const Color(0xFF0F0F0F),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.05),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -29,15 +40,16 @@ class DisplayPanel extends StatelessWidget {
             reverse: true,
             child: Text(
               expression,
-              style: const TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.w400,
-                color: Colors.white70,
-                letterSpacing: 1,
+              style: TextStyle(
+                fontSize: 36,
+                fontWeight: FontWeight.w300,
+                color: Colors.white.withValues(alpha: 0.9),
+                letterSpacing: 1.5,
+                height: 1.2,
               ),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           // Result preview
           if (result.isNotEmpty)
             SingleChildScrollView(
@@ -46,10 +58,10 @@ class DisplayPanel extends StatelessWidget {
               child: Text(
                 '= $result',
                 style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w300,
-                  color: Theme.of(context).colorScheme.primary,
-                  letterSpacing: 0.5,
+                  fontSize: 28,
+                  fontWeight: FontWeight.w400,
+                  color: const Color(0xFF6366F1),
+                  letterSpacing: 1,
                 ),
               ),
             ),

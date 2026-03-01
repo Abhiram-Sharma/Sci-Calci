@@ -5,21 +5,27 @@ import '../widgets/calculator_button.dart';
 import '../widgets/display_panel.dart';
 import '../widgets/history_drawer.dart';
 
-/// Main calculator screen with scientific functions
+/// Main calculator screen with professional UI
 class CalculatorScreen extends StatelessWidget {
   const CalculatorScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF0F0F0F),
       appBar: AppBar(
-        title: const Text('Scientific Calculator'),
+        title: const Text(
+          'Scientific Calculator',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.5,
+          ),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
-          // History button
           IconButton(
-            icon: const Icon(Icons.history),
+            icon: const Icon(Icons.history_rounded, size: 26),
             onPressed: () {
               showModalBottomSheet(
                 context: context,
@@ -29,14 +35,14 @@ class CalculatorScreen extends StatelessWidget {
               );
             },
           ),
+          const SizedBox(width: 8),
         ],
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              // Display panel
               Consumer<CalculatorProvider>(
                 builder: (context, provider, child) {
                   return DisplayPanel(
@@ -45,57 +51,62 @@ class CalculatorScreen extends StatelessWidget {
                   );
                 },
               ),
-              const SizedBox(height: 16),
-              // Memory and mode indicators
+              const SizedBox(height: 20),
               Consumer<CalculatorProvider>(
                 builder: (context, provider, child) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Memory indicator
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
+                          horizontal: 16,
+                          vertical: 8,
                         ),
                         decoration: BoxDecoration(
                           color: provider.hasMemory
-                              ? Theme.of(context)
-                                  .colorScheme
-                                  .primary
-                                  .withValues(alpha: 0.2)
+                              ? const Color(0xFF6366F1).withValues(alpha: 0.15)
                               : Colors.transparent,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: provider.hasMemory
+                                ? const Color(0xFF6366F1).withValues(alpha: 0.3)
+                                : Colors.transparent,
+                            width: 1,
+                          ),
                         ),
                         child: Text(
                           provider.hasMemory ? 'M' : '',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
+                          style: const TextStyle(
+                            color: Color(0xFF6366F1),
                             fontWeight: FontWeight.bold,
+                            fontSize: 14,
                           ),
                         ),
                       ),
-                      // Angle mode toggle
                       InkWell(
                         onTap: provider.toggleAngleMode,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(12),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
+                            horizontal: 16,
+                            vertical: 8,
                           ),
                           decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .secondary
-                                .withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(8),
+                            color:
+                                const Color(0xFF6366F1).withValues(alpha: 0.15),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: const Color(0xFF6366F1)
+                                  .withValues(alpha: 0.3),
+                              width: 1,
+                            ),
                           ),
                           child: Text(
                             provider.isDegreeMode ? 'DEG' : 'RAD',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.secondary,
+                            style: const TextStyle(
+                              color: Color(0xFF6366F1),
                               fontWeight: FontWeight.bold,
+                              fontSize: 14,
                             ),
                           ),
                         ),
@@ -104,8 +115,7 @@ class CalculatorScreen extends StatelessWidget {
                   );
                 },
               ),
-              const SizedBox(height: 16),
-              // Button grid
+              const SizedBox(height: 20),
               Expanded(
                 child: _buildButtonGrid(context),
               ),
@@ -116,13 +126,11 @@ class CalculatorScreen extends StatelessWidget {
     );
   }
 
-  /// Build the calculator button grid
   Widget _buildButtonGrid(BuildContext context) {
     final provider = Provider.of<CalculatorProvider>(context, listen: false);
 
     return Column(
       children: [
-        // Row 1: Scientific functions
         Expanded(
           child: Row(
             children: [
@@ -137,8 +145,7 @@ class CalculatorScreen extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 8),
-        // Row 2: More scientific functions
+        const SizedBox(height: 10),
         Expanded(
           child: Row(
             children: [
@@ -153,24 +160,22 @@ class CalculatorScreen extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 8),
-        // Row 3: Memory and special functions
+        const SizedBox(height: 10),
         Expanded(
           child: Row(
             children: [
               _buildButton(
-                  context, 'MC', ButtonType.special, provider.onMemoryClear),
+                  context, 'MC', ButtonType.function, provider.onMemoryClear),
               _buildButton(
-                  context, 'MR', ButtonType.special, provider.onMemoryRecall),
+                  context, 'MR', ButtonType.function, provider.onMemoryRecall),
               _buildButton(
-                  context, 'M+', ButtonType.special, provider.onMemoryAdd),
-              _buildButton(
-                  context, 'M-', ButtonType.special, provider.onMemorySubtract),
+                  context, 'M+', ButtonType.function, provider.onMemoryAdd),
+              _buildButton(context, 'M-', ButtonType.function,
+                  provider.onMemorySubtract),
             ],
           ),
         ),
-        const SizedBox(height: 8),
-        // Row 4: Clear, parentheses, operators
+        const SizedBox(height: 10),
         Expanded(
           child: Row(
             children: [
@@ -185,8 +190,7 @@ class CalculatorScreen extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 8),
-        // Row 5: Numbers 7-9 and multiply
+        const SizedBox(height: 10),
         Expanded(
           child: Row(
             children: [
@@ -201,8 +205,7 @@ class CalculatorScreen extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 8),
-        // Row 6: Numbers 4-6 and subtract
+        const SizedBox(height: 10),
         Expanded(
           child: Row(
             children: [
@@ -217,8 +220,7 @@ class CalculatorScreen extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 8),
-        // Row 7: Numbers 1-3 and add
+        const SizedBox(height: 10),
         Expanded(
           child: Row(
             children: [
@@ -233,8 +235,7 @@ class CalculatorScreen extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 8),
-        // Row 8: Special buttons and equals
+        const SizedBox(height: 10),
         Expanded(
           child: Row(
             children: [
@@ -253,7 +254,6 @@ class CalculatorScreen extends StatelessWidget {
     );
   }
 
-  /// Helper method to build a button with consistent styling
   Widget _buildButton(
     BuildContext context,
     String text,
@@ -262,7 +262,7 @@ class CalculatorScreen extends StatelessWidget {
   ) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 5),
         child: CalculatorButton(
           text: text,
           onPressed: onPressed,
@@ -274,11 +274,10 @@ class CalculatorScreen extends StatelessWidget {
     );
   }
 
-  /// Get appropriate font size based on button text length
   double _getButtonFontSize(String text) {
     if (text.length > 2) {
       return 18;
     }
-    return 24;
+    return 22;
   }
 }

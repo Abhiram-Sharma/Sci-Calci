@@ -14,35 +14,34 @@ class HistoryDrawer extends StatelessWidget {
         final history = provider.history;
 
         return Container(
-          height: MediaQuery.of(context).size.height * 0.5,
+          height: MediaQuery.of(context).size.height * 0.6,
           decoration: const BoxDecoration(
-            color: Color(0xFF1A1A1A),
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            color: Color(0xFF0F0F0F),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
           ),
           child: Column(
             children: [
-              // Handle bar
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 12),
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.white24,
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              // Header
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
                       'History',
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 26,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
+                        letterSpacing: 0.5,
                       ),
                     ),
                     if (history.isNotEmpty)
@@ -50,27 +49,39 @@ class HistoryDrawer extends StatelessWidget {
                         onPressed: () {
                           provider.clearHistory();
                         },
-                        child: Text(
+                        child: const Text(
                           'Clear All',
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Color(0xFFEF4444),
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
                   ],
                 ),
               ),
-              const Divider(color: Colors.white12),
-              // History list
+              Divider(color: Colors.white.withValues(alpha: 0.1), height: 1),
+              const SizedBox(height: 12),
               Expanded(
                 child: history.isEmpty
-                    ? const Center(
-                        child: Text(
-                          'No history yet',
-                          style: TextStyle(
-                            color: Colors.white38,
-                            fontSize: 16,
-                          ),
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.history_rounded,
+                              size: 64,
+                              color: Colors.white.withValues(alpha: 0.2),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'No history yet',
+                              style: TextStyle(
+                                color: Colors.white.withValues(alpha: 0.4),
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
                         ),
                       )
                     : ListView.builder(
@@ -110,40 +121,46 @@ class _HistoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(16),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        margin: const EdgeInsets.only(bottom: 8),
+        padding: const EdgeInsets.all(16),
+        margin: const EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
-          color: const Color(0xFF2A2A2A),
-          borderRadius: BorderRadius.circular(12),
+          color: const Color(0xFF1A1A1A),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.05),
+            width: 1,
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               item.expression,
-              style: const TextStyle(
-                color: Colors.white70,
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.7),
                 fontSize: 16,
+                letterSpacing: 0.5,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   '= ${item.result}',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
+                  style: const TextStyle(
+                    color: Color(0xFF6366F1),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.5,
                   ),
                 ),
                 Text(
                   _formatTime(item.timestamp),
-                  style: const TextStyle(
-                    color: Colors.white38,
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.3),
                     fontSize: 12,
                   ),
                 ),
@@ -168,7 +185,20 @@ class _HistoryItem extends StatelessWidget {
     } else if (difference.inDays < 7) {
       return '${difference.inDays}d ago';
     } else {
-      final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      final months = [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec'
+      ];
       return '${months[timestamp.month - 1]} ${timestamp.day}';
     }
   }

@@ -20,10 +20,10 @@ class ScientificCalculatorApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.deepPurple,
+            seedColor: const Color(0xFF6366F1),
             brightness: Brightness.dark,
           ),
-          scaffoldBackgroundColor: const Color(0xFF1A1A1A),
+          scaffoldBackgroundColor: const Color(0xFF0F0F0F),
         ),
         home: const CalculatorScreen(),
       ),
